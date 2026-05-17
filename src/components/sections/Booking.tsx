@@ -15,7 +15,7 @@ export function Booking() {
   return (
     <section
       id="book"
-      className="relative w-full bg-mist py-32 px-6 md:px-12 overflow-hidden"
+      className="relative w-full bg-mist py-24 md:py-32 px-5 md:px-12 overflow-hidden"
     >
       {/* Bg glow */}
       <div
@@ -29,15 +29,15 @@ export function Booking() {
         <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-copper">
           06 / Book
         </span>
-        <h2 className="font-display mt-4 text-5xl md:text-8xl leading-[0.9] text-bone text-balance">
+        <h2 className="font-display mt-4 text-4xl md:text-8xl leading-[0.9] text-bone text-balance">
           Reserve a chair.
           <br />
           <span className="text-ember">No app. No friction.</span>
         </h2>
 
-        <div className="mt-16 grid md:grid-cols-2 gap-10">
+        <div className="mt-10 md:mt-16 grid md:grid-cols-2 gap-6 md:gap-10">
           {/* Left: WhatsApp booking */}
-          <div className="rounded-2xl border border-bone/10 bg-ink-2 p-8 md:p-10">
+          <div className="rounded-2xl border border-bone/10 bg-ink-2 p-6 md:p-10">
             <OpenNowDial />
 
             <div className="mt-10">
@@ -92,7 +92,7 @@ export function Booking() {
           </div>
 
           {/* Right: location card */}
-          <div className="rounded-2xl border border-bone/10 bg-ink-2 p-8 md:p-10 flex flex-col">
+          <div className="rounded-2xl border border-bone/10 bg-ink-2 p-6 md:p-10 flex flex-col">
             <div className="font-mono text-[10px] uppercase tracking-[0.25em] text-bone-muted mb-3">
               Find us
             </div>

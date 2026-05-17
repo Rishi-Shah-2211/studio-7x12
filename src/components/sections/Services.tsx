@@ -1,11 +1,9 @@
 "use client";
 
 /**
- * Services
- * --------
- * The big scrolly moment. Section pins for N viewport-heights where N = service count.
- * As user scrolls, the 3D tool morphs and the copy on the left swaps with crossfade.
- * Each "step" highlights one service category.
+ * Services — pinned scrollytelling on both desktop and mobile.
+ * 3D tool morphs as user scrolls through service categories.
+ * On mobile: 3D sits above text instead of beside it, but pin behaviour is kept.
  */
 
 import { useEffect, useRef, useState } from "react";
@@ -63,22 +61,31 @@ export function Services() {
     >
       <div
         ref={trackRef}
-        className="relative h-screen w-full overflow-hidden bg-ink"
+        className="relative h-[100svh] w-full overflow-hidden bg-ink"
       >
         {/* Section label */}
-        <div className="absolute top-8 left-6 md:left-12 z-20 flex items-center gap-3">
+        <div className="absolute top-6 md:top-8 left-5 md:left-12 z-20 flex items-center gap-3">
           <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-copper">
             02 / Services
           </span>
-          <span className="h-px w-12 bg-copper/50" />
+          <span className="hidden md:inline-block h-px w-12 bg-copper/50" />
           <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-bone-muted">
-            {String(active + 1).padStart(2, "0")} of{" "}
-            {String(SERVICES.length).padStart(2, "0")}
+            {String(active + 1).padStart(2, "0")} / {String(SERVICES.length).padStart(2, "0")}
           </span>
         </div>
 
-        {/* Progress dots on right */}
-        <div className="absolute right-6 md:right-12 top-1/2 -translate-y-1/2 z-20 flex flex-col gap-3">
+        {/* Progress rail — bottom on mobile, right on desktop */}
+        <div className="md:hidden absolute bottom-4 inset-x-5 z-20 flex gap-1.5">
+          {SERVICES.map((srv, i) => (
+            <span
+              key={srv.id}
+              className={`h-0.5 flex-1 rounded-full transition-all ${
+                i === active ? "bg-ember" : "bg-bone-muted/30"
+              }`}
+            />
+          ))}
+        </div>
+        <div className="hidden md:flex absolute right-12 top-1/2 -translate-y-1/2 z-20 flex-col gap-3">
           {SERVICES.map((srv, i) => (
             <div key={srv.id} className="flex items-center gap-3">
               <span
@@ -90,36 +97,60 @@ export function Services() {
               </span>
               <span
                 className={`block h-px transition-all ${
-                  i === active
-                    ? "w-10 bg-ember"
-                    : "w-4 bg-bone-muted/40"
+                  i === active ? "w-10 bg-ember" : "w-4 bg-bone-muted/40"
                 }`}
               />
             </div>
           ))}
         </div>
 
-        {/* Grid layout */}
-        <div className="relative grid h-full grid-cols-12 px-6 md:px-12">
-          {/* Left: copy */}
-          <div className="col-span-12 md:col-span-5 self-center pt-24 md:pt-0">
+        {/* ===== MOBILE: 3D top, copy bottom ===== */}
+        <div className="md:hidden flex flex-col h-full pt-16 pb-12 px-5">
+          <div className="relative flex-1 min-h-0 -mx-5">
+            <ToolMorph tool={s.tool} progress={progress} className="w-full h-full" />
+          </div>
+          <div key={s.id} className="animate-[fadeUp_.5s_ease-out] pt-4">
+            <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-ember">
+              {s.category}{s.hindi ? ` · ${s.hindi}` : ""}
+            </span>
+            <h3 className="font-display mt-2 text-4xl leading-[0.95] text-bone text-balance">
+              {s.title}
+            </h3>
+            <p className="mt-3 text-bone-dim text-sm leading-relaxed line-clamp-3">
+              {s.description}
+            </p>
+            <div className="mt-4 flex items-center justify-between">
+              <div className="flex gap-6">
+                <div>
+                  <div className="font-mono text-[9px] uppercase tracking-[0.25em] text-bone-muted">price</div>
+                  <div className="font-display text-base text-bone">₹{s.priceFrom}–{s.priceTo.toLocaleString()}</div>
+                </div>
+                <div>
+                  <div className="font-mono text-[9px] uppercase tracking-[0.25em] text-bone-muted">time</div>
+                  <div className="font-display text-base text-bone">{s.duration}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ===== DESKTOP: side-by-side ===== */}
+        <div className="hidden md:grid relative h-full grid-cols-12 px-12">
+          <div className="col-span-5 self-center">
             <div key={s.id} className="animate-[fadeUp_.6s_ease-out]">
               <span className="font-mono text-xs uppercase tracking-[0.3em] text-ember">
-                {s.category}
-                {s.hindi ? ` · ${s.hindi}` : ""}
+                {s.category}{s.hindi ? ` · ${s.hindi}` : ""}
               </span>
-              <h3 className="font-display mt-4 text-5xl md:text-7xl leading-[0.95] text-bone text-balance">
+              <h3 className="font-display mt-4 text-7xl leading-[0.95] text-bone text-balance">
                 {s.title}
               </h3>
               <p className="mt-6 max-w-md text-bone-dim text-lg leading-relaxed">
                 {s.description}
               </p>
-
               <div className="mt-10 flex flex-wrap gap-8">
                 <Stat label="Price range" value={`₹${s.priceFrom}–${s.priceTo.toLocaleString()}`} />
                 <Stat label="Duration" value={s.duration} />
               </div>
-
               <a
                 href="#book"
                 className="mt-10 inline-flex items-center gap-2 text-sm uppercase tracking-[0.2em] text-bone border-b border-bone/30 pb-1 hover:text-ember hover:border-ember transition"
@@ -128,29 +159,17 @@ export function Services() {
               </a>
             </div>
           </div>
-
-          {/* Right: 3D tool */}
-          <div className="col-span-12 md:col-span-7 relative">
+          <div className="col-span-7 relative">
             <div className="absolute inset-0">
-              <ToolMorph
-                tool={s.tool}
-                progress={progress}
-                className="w-full h-full"
-              />
+              <ToolMorph tool={s.tool} progress={progress} className="w-full h-full" />
             </div>
           </div>
         </div>
 
         <style jsx>{`
           @keyframes fadeUp {
-            from {
-              opacity: 0;
-              transform: translateY(20px);
-            }
-            to {
-              opacity: 1;
-              transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
           }
         `}</style>
       </div>

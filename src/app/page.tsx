@@ -6,6 +6,7 @@ import { Stylists } from "@/components/sections/Stylists";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { Booking } from "@/components/sections/Booking";
 import { Footer } from "@/components/sections/Footer";
+import { StickyCTA } from "@/components/ui/StickyCTA";
 
 export default function Home() {
   return (
@@ -18,6 +19,7 @@ export default function Home() {
       <Testimonials />
       <Booking />
       <Footer />
+      <StickyCTA />
     </main>
   );
 }

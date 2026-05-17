@@ -69,7 +69,7 @@ export function SignatureGrid() {
     <section
       ref={sectionRef}
       id="signature"
-      className="relative w-full bg-ink py-32 md:py-44 px-6 md:px-12 overflow-hidden"
+      className="relative w-full bg-ink py-24 md:py-44 px-5 md:px-12 overflow-hidden"
     >
       {/* Section eyebrow */}
       <div className="mx-auto max-w-7xl">
@@ -77,14 +77,14 @@ export function SignatureGrid() {
           <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-copper">
             03 / The signature
           </span>
-          <h2 className="font-display mt-6 text-6xl md:text-9xl leading-[0.9] text-bone text-balance">
+          <h2 className="font-display mt-4 md:mt-6 text-5xl md:text-9xl leading-[0.9] text-bone text-balance">
             Seven by twelve.
             <br />
             <span className="text-ember">Eighty-four</span> ways to
             <br />
             walk out new.
           </h2>
-          <p className="mt-8 max-w-xl text-bone-dim text-lg leading-relaxed">
+          <p className="mt-6 md:mt-8 max-w-xl text-bone-dim text-base md:text-lg leading-relaxed">
             Our name isn't an accident. Seven days a week, twelve hours a day —
             eighty-four chances to change the way you feel. Hover any tile.
           </p>
@@ -93,10 +93,10 @@ export function SignatureGrid() {
         {/* The grid */}
         <div
           ref={gridRef}
-          className="mt-20 grid gap-2 md:gap-3"
+          className="mt-12 md:mt-20 grid gap-1.5 md:gap-3"
           style={{
             gridTemplateColumns: "repeat(7, minmax(0, 1fr))",
-            gridAutoRows: "minmax(70px, 8vw)",
+            gridAutoRows: "minmax(44px, 8vw)",
           }}
         >
           {TILES.map((t) => (

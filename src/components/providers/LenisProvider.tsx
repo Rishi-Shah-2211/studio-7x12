@@ -11,11 +11,19 @@ if (typeof window !== "undefined") {
 
 export function LenisProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
+    const isTouch =
+      window.matchMedia("(pointer: coarse)").matches ||
+      "ontouchstart" in window;
+
     const lenis = new Lenis({
-      duration: 1.2,
+      // Mobile: shorter duration, less lerp → feels native and avoids jank
+      duration: isTouch ? 0.8 : 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-      lerp: 0.1,
+      // On touch, don't intercept — native momentum scroll is better
+      syncTouch: false,
+      touchMultiplier: 1.5,
+      lerp: isTouch ? 0.18 : 0.1,
     });
 
     lenis.on("scroll", ScrollTrigger.update);

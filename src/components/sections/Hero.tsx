@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { STUDIO } from "@/lib/data";
+import { MobileNav } from "@/components/ui/MobileNav";
 
 const ToolMorph = dynamic(
   () => import("@/components/three/ToolMorph").then((m) => m.ToolMorph),
@@ -42,8 +43,8 @@ export function Hero() {
         }}
       />
 
-      {/* Top hairline */}
-      <div className="absolute inset-x-0 top-0 z-20 flex items-center justify-between px-6 md:px-12 pt-6">
+      {/* Top nav */}
+      <div className="absolute inset-x-0 top-0 z-20 flex items-center justify-between px-5 md:px-12 pt-5 md:pt-6">
         <a href="#hero" className="font-display text-2xl md:text-3xl text-bone">
           Studio<span className="text-ember">·</span>7
           <span className="text-bone-muted text-base align-top">×</span>12
@@ -63,16 +64,56 @@ export function Hero() {
           <span className="w-1.5 h-1.5 rounded-full bg-sage animate-pulse" />
           WhatsApp
         </a>
+        <MobileNav />
       </div>
 
-      {/* Hero grid */}
-      <div className="relative z-10 grid h-[100svh] grid-cols-12 grid-rows-12 px-6 md:px-12">
-        {/* Left copy */}
-        <div className="col-span-12 md:col-span-5 row-start-4 md:row-start-3 row-span-6 self-center">
+      {/* ========== MOBILE LAYOUT ========== */}
+      <div className="md:hidden relative z-10 flex flex-col h-[100svh] pt-24 pb-20 px-5">
+        <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-copper mb-4">
+          Anand · est. 2018
+        </p>
+        <h1 className="font-display text-[13vw] leading-[0.88] text-bone text-balance">
+          Where craft
+          <br />
+          meets <em className="not-italic text-ember">calm.</em>
+        </h1>
+
+        {/* 3D tool fills remaining space, scaled down */}
+        <div className="relative flex-1 min-h-0 -mx-5 my-4">
+          <ToolMorph tool="scissor" progress={progress} className="w-full h-full" />
+        </div>
+
+        <p className="text-bone-dim text-sm leading-relaxed mb-4">
+          Anand's largest unisex salon & spa. 13 stylists, six rooms, one
+          quiet promise.
+        </p>
+
+        <div className="flex items-center gap-3">
+          <a
+            href="#book"
+            className="flex-1 inline-flex items-center justify-center gap-2 rounded-full bg-ember px-5 py-3.5 text-bone text-sm font-medium"
+          >
+            Reserve a chair →
+          </a>
+          <a
+            href={`tel:${STUDIO.phone.replace(/\s/g, "")}`}
+            className="inline-flex items-center justify-center w-12 h-12 rounded-full border border-bone/20 text-bone"
+            aria-label="Call"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20 15.5c-1.25 0-2.45-.2-3.57-.57a1 1 0 00-1.02.24l-2.2 2.2a15.07 15.07 0 01-6.59-6.59l2.2-2.2a1 1 0 00.24-1.02A11.36 11.36 0 018.5 4a1 1 0 00-1-1H4a1 1 0 00-1 1 17 17 0 0017 17 1 1 0 001-1v-3.5a1 1 0 00-1-1z" />
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      {/* ========== DESKTOP LAYOUT ========== */}
+      <div className="hidden md:grid relative z-10 h-[100svh] grid-cols-12 grid-rows-12 px-12">
+        <div className="col-span-5 row-start-3 row-span-6 self-center">
           <p className="font-mono text-xs uppercase tracking-[0.3em] text-copper mb-6">
             Anand · est. 2018 · 4th floor, 60 Feet Road
           </p>
-          <h1 className="font-display text-[14vw] md:text-[7.5vw] leading-[0.85] text-bone text-balance">
+          <h1 className="font-display text-[7.5vw] leading-[0.85] text-bone text-balance">
             Where craft
             <br />
             meets <em className="not-italic text-ember">calm.</em>
@@ -81,7 +122,6 @@ export function Hero() {
             Anand's largest unisex salon & spa. 13 stylists. Six service rooms.
             One quiet promise — you leave looking like the best version of you.
           </p>
-
           <div className="mt-10 flex flex-wrap items-center gap-4">
             <a
               href="#book"
@@ -89,13 +129,7 @@ export function Hero() {
             >
               Reserve a chair
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M5 12h14M13 6l6 6-6 6"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
+                <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </a>
             <a
@@ -107,21 +141,18 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Right — 3D tool centerpiece */}
-        <div className="col-span-12 md:col-span-7 row-start-1 md:row-start-1 row-span-12 relative">
+        <div className="col-span-7 row-start-1 row-span-12 relative">
           <div className="absolute inset-0">
             <ToolMorph tool="scissor" progress={progress} className="w-full h-full" />
           </div>
-
-          {/* Floating callouts around the tool */}
           <Callout className="top-[18%] right-[8%]" label="13 stylists" sub="trained in Mumbai & Bangkok" />
           <Callout className="bottom-[24%] right-[14%]" label="4.5 ★" sub="90+ Google reviews" />
           <Callout className="bottom-[12%] left-[6%]" label="open now" sub="8 AM — 9:30 PM, daily" dot />
         </div>
       </div>
 
-      {/* Bottom scroll cue */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-3">
+      {/* Scroll cue — desktop only */}
+      <div className="hidden md:flex absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex-col items-center gap-3">
         <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-bone-muted">
           scroll · the scissor turns
         </span>

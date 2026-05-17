@@ -4,14 +4,14 @@ import { TESTIMONIALS, STUDIO } from "@/lib/data";
 
 export function Testimonials() {
   return (
-    <section className="relative w-full bg-ink py-32 px-6 md:px-12">
+    <section className="relative w-full bg-ink py-24 md:py-32 px-5 md:px-12">
       <div className="mx-auto max-w-6xl">
-        <div className="flex items-end justify-between mb-16">
+        <div className="flex items-end justify-between mb-10 md:mb-16">
           <div>
             <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-copper">
               05 / Word of mouth
             </span>
-            <h2 className="font-display mt-4 text-4xl md:text-6xl text-bone text-balance">
+            <h2 className="font-display mt-4 text-3xl md:text-6xl text-bone text-balance">
               {STUDIO.rating}★ on Google · {STUDIO.reviewCount}+ reviews
             </h2>
           </div>
