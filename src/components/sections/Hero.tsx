@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
 import { STUDIO } from "@/lib/data";
 import { MobileNav } from "@/components/ui/MobileNav";
@@ -12,7 +12,7 @@ const ToolMorph = dynamic(
 
 export function Hero() {
   const ref = useRef<HTMLDivElement>(null);
-  const [progress, setProgress] = useState(0);
+  const progressRef = useRef(0);
 
   useEffect(() => {
     const onScroll = () => {
@@ -21,7 +21,7 @@ export function Hero() {
       const rect = el.getBoundingClientRect();
       const total = rect.height + window.innerHeight;
       const seen = window.innerHeight - rect.top;
-      setProgress(Math.max(0, Math.min(1, seen / total)));
+      progressRef.current = Math.max(0, Math.min(1, seen / total));
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -80,7 +80,7 @@ export function Hero() {
 
         {/* 3D tool fills remaining space, scaled down */}
         <div className="relative flex-1 min-h-0 -mx-5 my-4">
-          <ToolMorph tool="scissor" progress={progress} className="w-full h-full" />
+          <ToolMorph tool="scissor" progressRef={progressRef} className="w-full h-full" />
         </div>
 
         <p className="text-bone-dim text-sm leading-relaxed mb-4">
@@ -143,7 +143,7 @@ export function Hero() {
 
         <div className="col-span-7 row-start-1 row-span-12 relative">
           <div className="absolute inset-0">
-            <ToolMorph tool="scissor" progress={progress} className="w-full h-full" />
+            <ToolMorph tool="scissor" progressRef={progressRef} className="w-full h-full" />
           </div>
           <Callout className="top-[18%] right-[8%]" label="13 stylists" sub="trained in Mumbai & Bangkok" />
           <Callout className="bottom-[24%] right-[14%]" label="4.5 ★" sub="90+ Google reviews" />

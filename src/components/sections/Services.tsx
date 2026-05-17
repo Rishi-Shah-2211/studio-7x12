@@ -21,7 +21,8 @@ export function Services() {
   const wrapRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
-  const [progress, setProgress] = useState(0);
+  const progressRef = useRef(0);
+  const activeRef = useRef(0);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -33,15 +34,18 @@ export function Services() {
         start: "top top",
         end: () => `+=${SERVICES.length * 100}%`,
         pin: trackRef.current,
-        scrub: true,
+        scrub: 0.5,
         onUpdate: (self) => {
-          const p = self.progress;
-          setProgress(p);
+          progressRef.current = self.progress;
           const idx = Math.min(
             SERVICES.length - 1,
-            Math.floor(p * SERVICES.length)
+            Math.floor(self.progress * SERVICES.length)
           );
-          setActive(idx);
+          // Only re-render when category actually changes
+          if (idx !== activeRef.current) {
+            activeRef.current = idx;
+            setActive(idx);
+          }
         },
       });
       return () => trigger.kill();
@@ -107,7 +111,7 @@ export function Services() {
         {/* ===== MOBILE: 3D top, copy bottom ===== */}
         <div className="md:hidden flex flex-col h-full pt-16 pb-12 px-5">
           <div className="relative flex-1 min-h-0 -mx-5">
-            <ToolMorph tool={s.tool} progress={progress} className="w-full h-full" />
+            <ToolMorph tool={s.tool} progressRef={progressRef} className="w-full h-full" />
           </div>
           <div key={s.id} className="animate-[fadeUp_.5s_ease-out] pt-4">
             <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-ember">
@@ -161,7 +165,7 @@ export function Services() {
           </div>
           <div className="col-span-7 relative">
             <div className="absolute inset-0">
-              <ToolMorph tool={s.tool} progress={progress} className="w-full h-full" />
+              <ToolMorph tool={s.tool} progressRef={progressRef} className="w-full h-full" />
             </div>
           </div>
         </div>
